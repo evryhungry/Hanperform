@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -32,6 +33,8 @@ public class PerformancesController {
     @GetMapping("/{id}")
     public String getPerformanceById(@PathVariable Long id, Model model) {
         PerformancesResponseDto performance = performancesService.getPerformanceById(id);
+        model.addAttribute("startDateFormatted", performance.getStartDate());
+        model.addAttribute("endDateFormatted", performance.getEndDate());
         model.addAttribute("performance", performance);
         model.addAttribute("ticketDto", new TicketDto());
         return "performance_detail";  // performance_detail.html을 반환
@@ -51,7 +54,7 @@ public class PerformancesController {
 
         Long performanceId = performancesService.createPerformances(requestDto, image);
         redirectAttributes.addAttribute("id", performanceId);
-        return "redirect:/performances/{id}";
+        return "redirect:/index";
     }
 
     @GetMapping("/{id}/edit")

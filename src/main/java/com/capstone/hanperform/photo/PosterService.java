@@ -43,7 +43,7 @@ public class PosterService {
         // 실제 파일이 저장될 경로
         String filePath = uploadsDir + fileName;
         // DB에 저장할 경로 문자열
-        String dbFilePath = "/images/" + fileName;
+        String dbFilePath = "images/" + fileName;
 
         Path path = Paths.get(filePath); // Path 객체 생성
         Files.createDirectories(path.getParent()); // 디렉토리 생성

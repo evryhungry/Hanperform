@@ -29,7 +29,7 @@ public class TicketController {
 
     @PostMapping("/reserve/{performanceId}")
     public String reserveTicket(@PathVariable Long performanceId,
-                                @ModelAttribute TicketDto ticketDto,
+                                @ModelAttribute TicketDto ticketDto
                                ) {
 //        UserDto user = userService.getUserByName(principal.getName());
         PerformancesResponseDto performance = performancesService.getPerformanceById(performanceId);
@@ -40,7 +40,7 @@ public class TicketController {
     }
 
     @GetMapping("/reservations")
-    public String reservations(Model model, Principal principal) {
+    public String reservations(Model model) {
 //        UserDto user = userService.getUserByName(principal.getName());
         List<TicketDto> tickets = ticketService.getAllTickets();
 

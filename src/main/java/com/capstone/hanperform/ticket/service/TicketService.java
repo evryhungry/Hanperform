@@ -22,8 +22,6 @@ public class TicketService {
     private final PerformancesRepository performancesRepository;
 
     public TicketDto createTicket(Long performanceId, TicketDto ticketDTO) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         Performances performance = performancesRepository.findById(performanceId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 공연이 존재하지 않습니다."));
 
@@ -32,15 +30,19 @@ public class TicketService {
             throw new IllegalArgumentException("좌석 번호는 1부터 20까지 가능합니다.");
         }
 
-        boolean isSeatTaken = ticketRepository.existsByPerformanceIdAndSeatNumber(performanceId, seatNumber);
+        boolean isSeatTaken = ticketRepository.existsByPerformanceIdAndDateAndSeatNumber(
+                performanceId, ticketDTO.getDate(), seatNumber);
+
         if (isSeatTaken) {
-            throw new IllegalArgumentException("해당 좌석은 이미 예약되었습니다.");
+            throw new IllegalArgumentException("해당 좌석은 이미 예약되었습니다. 다른 좌석을 선택해 주세요.");
         }
 
         Ticket ticket = new Ticket(performance, ticketDTO.getDate(), seatNumber);
         Ticket savedTicket = ticketRepository.save(ticket);
         return TicketDto.fromEntity(savedTicket);
     }
+
+
     public List<TicketDto> getAllTickets() {
         List<Ticket> tickets = ticketRepository.findAll();
         return tickets.stream().map(TicketDto::fromEntity).collect(Collectors.toList());
