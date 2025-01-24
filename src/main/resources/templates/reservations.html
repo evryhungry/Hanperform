@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>예매 내역</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<nav th:replace="~{navbar :: navbarFragment}"></nav>
+<div class="container mt-4">
+  <h1>예매 내역</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>공연 제목</th>
+      <th>좌석 번호</th>
+      <th>예매 날짜</th>
+      <th>취소</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ticket : ${tickets}">
+      <td th:text="${ticket.getPerformance().getTitle()}">공연 제목</td>
+      <td th:text="${ticket.seatNumber}">좌석 번호</td>
+      <td th:text="${ticket.date}">예매 날짜</td>
+      <td>
+        <a th:href="@{/tickets/delete/{id}(id=${ticket.id})}" class="btn btn-danger btn-sm">취소</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
