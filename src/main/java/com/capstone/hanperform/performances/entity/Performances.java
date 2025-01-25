@@ -5,10 +5,7 @@ import com.capstone.hanperform.performances.dto.PerformancesRequestDto;
 import com.capstone.hanperform.photo.Poster;
 import com.capstone.hanperform.ticket.entity.Ticket;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
@@ -45,6 +42,7 @@ public class Performances {
 
     private Long price;
 
+    @Setter
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "poster_id", unique = true)
     private Poster poster;
@@ -60,4 +58,5 @@ public class Performances {
                 .poster(poster)
                 .build();
     }
+
 }

@@ -5,6 +5,7 @@ import com.capstone.hanperform.performances.dto.PerformancesResponseDto;
 import com.capstone.hanperform.performances.entity.Performances;
 import com.capstone.hanperform.performances.repository.PerformancesRepository;
 import com.capstone.hanperform.photo.Poster;
+import com.capstone.hanperform.photo.PosterRepository;
 import com.capstone.hanperform.photo.PosterService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class PerformancesService {
     private final PerformancesRepository performancesRepository;
     private final PosterService posterService;
+    private final PosterRepository posterRepository;
 
     public Long createPerformances(PerformancesRequestDto dto, MultipartFile image) {
         Poster poster = posterService.uploadThumbnail(image);
@@ -66,8 +68,12 @@ public class PerformancesService {
         Performances performances = performancesRepository.findById(id).orElseThrow();
         Poster poster = posterService.uploadThumbnail(image);
 
-        performances.toBuilder().poster(poster);
-        performancesRepository.save(performances);
+
+        if (performances.getPoster() != null) {
+            posterRepository.delete(performances.getPoster());
+        }
+
+        performances.setPoster(poster);
     }
 
     @Transactional

@@ -69,7 +69,9 @@ public class PerformancesController {
                                   @ModelAttribute PerformancesRequestDto requestDto,
                                   @RequestParam MultipartFile image) {
         performancesService.updatePerformance(id, requestDto);
-        if (!image.isEmpty()) performancesService.updatePoster(id, image);
+        if (image != null && !image.isEmpty()) {
+            performancesService.updatePoster(id, image);
+        }
         return "redirect:/performances/{id}";
     }
 
